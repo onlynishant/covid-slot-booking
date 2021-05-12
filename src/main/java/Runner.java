@@ -241,9 +241,9 @@ public class Runner {
         System.out.println(getOtp);
       }
 
-      if (getOtp.get("response") != null && getOtp.get("response").equals("OTP Already Sent")) {
-        txnId = txnIdOld;
-      }
+//      if (getOtp.get("response") != null && getOtp.get("response").equals("OTP Already Sent")) {
+//        txnId = txnIdOld;
+//      }
 
       System.out.println("Enter OTP :");
       // alert sound
@@ -281,7 +281,7 @@ public class Runner {
     return token;
   }
 
-  public static void validateToken(String token) throws IOException, InterruptedException {
+  public static String validateToken(String token) throws IOException, InterruptedException {
     boolean isValid = false;
     while (!isValid) {
 //      System.out.println("Validating token..");
@@ -353,7 +353,7 @@ public class Runner {
         token = getToken(false);
       }
     }
-
+    return token;
   }
 
   public static void main(String[] args) throws IOException, NoSuchAlgorithmException, InterruptedException {
@@ -391,7 +391,7 @@ public class Runner {
     while (!done.get()) {
       for (int i = 0; i < 4; i++) {
 
-        validateToken(token);
+        token = validateToken(token);
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 7 * i);
