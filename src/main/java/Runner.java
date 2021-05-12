@@ -242,6 +242,11 @@ public class Runner {
       }
 
       System.out.println("Enter OTP :");
+      // alert sound
+      for (int j = 0; j < 5; j++) {
+        Toolkit.getDefaultToolkit().beep();
+      }
+
       String otp = sc.next();
 
       String sha256hex = DigestUtils.sha256Hex(otp);
@@ -522,7 +527,7 @@ public class Runner {
             });
           });
 //          System.out.println("No Slot available :(");
-          Thread.sleep(210);
+          Thread.sleep(500);
         }
       }
     }
