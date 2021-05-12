@@ -9,13 +9,8 @@ Just run bellow command and follow instrcutions:
 ```
 git clone https://github.com/onlynishant/covid-slot-booking.git
 cd covid-slot-booking
+mvn package
 java -cp "target/dependency/*:target/CowinHelp-1.0-SNAPSHOT-jar-with-dependencies.jar" Runner
-```
-
-If you get any error then you need to build it yourself after <code>cd covid-slot-booking</code>. </br>
-
-```
-  mvn package
 ```
 
 Please install <b>maven</b>: https://maven.apache.org/install.html
