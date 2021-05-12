@@ -287,24 +287,9 @@ public class Runner {
 //      System.out.println("Validating token..");
       Map<String, String> header = new HashMap<>();
       header.put(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-//    header.put("origin", "https://selfregistration.cowin.gov.in");
-//    header.put("referer", "https://selfregistration.cowin.gov.in/");
       header.put(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
 
-//      System.out.println(header);
-//
-//      URL url = new URL(BASE_URL + beneficiaries_URL);
-//      HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//      con.setRequestMethod("GET");
-//      con.setRequestProperty("Content-Type", "application/json");
-//      con.setRequestProperty(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-//      con.setRequestProperty(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
-//
-//      int status = con.getResponseCode();
-//      System.out.println(status);
       Map<String, Object> getToken = getResponse(BASE_URL + beneficiaries_URL, null, header, Method.GET);
-
-//      System.out.println(getToken);
 
       if ((int) getToken.getOrDefault("status_code", 0) != 200) {
         System.out.println(getToken);
@@ -379,45 +364,6 @@ public class Runner {
     } else {
       System.out.println("tokenFile File already exists.");
     }
-
-//    Map<String, String> header = new HashMap<>();
-//    header.put("x-api-key", API_KEY);
-//
-//    Map<String, Object> input = new HashMap<>();
-//    input.put("mobile", "8008842030");
-//
-//    Map<String, Object> getOtp = getResponse(BASE_URL + authentication_URL, input, header, Method.POST);
-//
-//    String txnId = (String) getOtp.get("txnId");
-//
-//    String token;
-//    Scanner sc = new Scanner(System.in);
-//
-//    if (txnId == null && getOtp.get("response").equals("OTP Already Sent")) {
-//      System.out.println("Reading old token");
-//      BufferedReader reader = new BufferedReader(new FileReader(tokenFile));
-//      token = reader.readLine();
-//      reader.close();
-//    } else {
-//
-//      System.out.println("txnId: " + txnId);
-//
-//      System.out.println("Enter OTP:");
-//      String otp = sc.next();
-//
-//      String sha256hex = DigestUtils.sha256Hex(otp);
-//
-//      input = new HashMap<>();
-//      input.put("txnId", txnId);
-//      input.put("otp", sha256hex);
-//      Map<String, Object> getToken = getResponse(BASE_URL + otp_validation_URL, input, null, Method.POST);
-//
-//      token = (String) getToken.get("token");
-//
-//      FileWriter fileWriter = new FileWriter(tokenFile);
-//      fileWriter.write(token);
-//      fileWriter.close();
-//    }
 
     Scanner sc = new Scanner(System.in);
 
