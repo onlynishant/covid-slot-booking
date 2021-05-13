@@ -17,7 +17,7 @@ import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.Method;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
-import java.awt.*;
+import javax.sound.sampled.LineUnavailableException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
@@ -143,6 +142,7 @@ public class Runner {
   private static String VACCINE;
   private static String DOSE;
   private static String START_DATE;
+  private static String fee_type;
 
   static {
     jsonMapper.registerModule(new Jdk8Module());
@@ -219,7 +219,7 @@ public class Runner {
 //
 //  }
 
-  public static String getToken(boolean readOld) throws IOException, InterruptedException {
+  public static String getToken(boolean readOld) throws IOException, InterruptedException, LineUnavailableException {
     Map<String, String> header = new HashMap<>();
     header.put(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
 
@@ -247,9 +247,7 @@ public class Runner {
 
       System.out.println("Enter OTP :");
       // alert sound
-      for (int j = 0; j < 5; j++) {
-        Toolkit.getDefaultToolkit().beep();
-      }
+      SoundUtils.alertSound(2);
 
       String otp = sc.next();
 
@@ -281,7 +279,7 @@ public class Runner {
     return token;
   }
 
-  public static String validateToken(String token) throws IOException, InterruptedException {
+  public static String validateToken(String token) throws IOException, InterruptedException, LineUnavailableException {
     boolean isValid = false;
     while (!isValid) {
 //      System.out.println("Validating token..");
@@ -344,6 +342,14 @@ public class Runner {
         } else if (c == 2) {
           VACCINE = "COVISHIELD";
         }
+
+        System.out.println("Fee type preference (0 = any, 1 = Free, 2 = Paid): ");
+        c = Integer.parseInt(sc.next());
+        if (c == 1) {
+          fee_type = "Free";
+        } else if (c == 2) {
+          fee_type = "Paid";
+        }
       }
 
       if (getToken != null && (int) getToken.getOrDefault("status_code", 0) == 200) {
@@ -356,7 +362,7 @@ public class Runner {
     return token;
   }
 
-  public static void main(String[] args) throws IOException, NoSuchAlgorithmException, InterruptedException {
+  public static void main(String[] args) throws IOException, NoSuchAlgorithmException, InterruptedException, LineUnavailableException {
 
     System.out.println("Searching for AGE: " + MIN_AGE + " in district_id: " + district_id);
     if (tokenFile.createNewFile()) {
@@ -416,6 +422,13 @@ public class Runner {
           root.centers.forEach(center -> {
             center.sessions.forEach(session -> {
               if (session.available_capacity > 1 && session.min_age_limit == MIN_AGE) {
+                if (fee_type != null && !fee_type.isEmpty()) {
+                  if (!center.fee_type.equalsIgnoreCase(fee_type)) {
+                    System.out.println("FEE TYPE NOT MATCHED. continue search ..");
+                    return;
+                  }
+                }
+
                 System.out.println("Slot available: " + center);
                 System.out.println("Pin code:" + center.pincode);
                 System.out.println("Hospital Name:" + center.name);
@@ -439,9 +452,7 @@ public class Runner {
                     System.out.println("Trying to book appointment:");
 
                     // alert sound
-                    for (int j = 0; j < 5; j++) {
-                      Toolkit.getDefaultToolkit().beep();
-                    }
+                    SoundUtils.alertSound(2);
 
                     // generate captcha
                     System.out.println("Getting captcha");
@@ -493,7 +504,7 @@ public class Runner {
                     } else {
                       System.out.println("Failed :(" + getAppointment);
                     }
-                  } catch (IOException e) {
+                  } catch (IOException | LineUnavailableException e) {
                     e.printStackTrace();
                   }
                 });
