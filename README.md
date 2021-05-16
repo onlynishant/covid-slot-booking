@@ -10,7 +10,10 @@ Just run bellow command and follow instrcutions:
 git clone https://github.com/onlynishant/covid-slot-booking.git
 cd covid-slot-booking
 mvn package
+// for weekly search
 java -cp "target/dependency/*:target/CowinHelp-1.0-SNAPSHOT-jar-with-dependencies.jar" Runner
+// for daily search
+java -cp "target/dependency/*:target/CowinHelp-1.0-SNAPSHOT-jar-with-dependencies.jar" Runner2
 ```
 
 Please install <b>maven</b>: https://maven.apache.org/install.html
