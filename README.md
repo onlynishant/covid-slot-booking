@@ -20,7 +20,7 @@ cd covid-slot-booking
 mvn package
 // for weekly search
 java -cp "target/dependency/*:target/CowinHelp-1.0-SNAPSHOT-jar-with-dependencies.jar" Runner
-// for daily search
+// for daily search [NEW and fast]
 java -cp "target/dependency/*:target/CowinHelp-1.0-SNAPSHOT-jar-with-dependencies.jar" Runner2
 ```
 
