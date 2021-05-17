@@ -32,3 +32,5 @@ Please install <b>maven</b>: https://maven.apache.org/install.html
 3. Select `Search By District` and then select `state` and `District` and hit Search
 4. You will able to see URL like below image
 ![district id](https://github.com/onlynishant/covid-slot-booking/blob/master/district_id.png?raw=true)
+
+<b>Pro Tips:</b> You can direclty enter all the user input in code itself so that every time you run the program (in some case every 15 mins because of new session expiry limit), you just need to enter OTP.
