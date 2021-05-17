@@ -25,3 +25,10 @@ java -cp "target/dependency/*:target/CowinHelp-1.0-SNAPSHOT-jar-with-dependencie
 ```
 
 Please install <b>maven</b>: https://maven.apache.org/install.html
+
+<b>How to find district ID: </b>
+1. Go to https://www.cowin.gov.in/home
+2. Open `developer mode` in Browser and move to `Network` tab
+3. Select `Search By District` and then select `state` and `District` and hit Search
+4. You will able to see URL like below image
+![district id](https://github.com/onlynishant/covid-slot-booking/blob/master/district_id.png?raw=true)
