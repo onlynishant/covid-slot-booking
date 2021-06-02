@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import lombok.ToString;
 import org.apache.batik.transcoder.TranscoderException;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -18,9 +21,7 @@ import org.apache.hc.core5.http.Method;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import javax.sound.sampled.LineUnavailableException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -180,6 +181,8 @@ public class Runner2 {
   public static String getToken(boolean readOld) throws IOException, InterruptedException, LineUnavailableException {
     Map<String, String> header = new HashMap<>();
     header.put(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
+    header.put("referer", "https://selfregistration.cowin.gov.in/");
+    header.put("origin", "https://selfregistration.cowin.gov.in/");
 
     Map<String, Object> input = new HashMap<>();
     input.put("mobile", mobile);
@@ -331,6 +334,19 @@ public class Runner2 {
     }
     return token;
   }
+  public static void svgToPng(String fileName, String output) throws IOException, TranscoderException {
+    String svg_URI_input = new File(fileName).toURL().toString();
+    TranscoderInput input_svg_image = new TranscoderInput(svg_URI_input);
+    //Step-2: Define OutputStream to PNG Image and attach to TranscoderOutput
+    OutputStream png_ostream = new FileOutputStream(output);
+    TranscoderOutput output_png_image = new TranscoderOutput(png_ostream);
+    // Step-3: Create PNGTranscoder and define hints if required
+    PNGTranscoder my_converter = new PNGTranscoder();
+    // Step-4: Convert and Write output
+    my_converter.transcode(input_svg_image, output_png_image);
+    png_ostream.flush();
+    png_ostream.close();
+  }
 
   public static void main(String[] args) throws IOException, NoSuchAlgorithmException, InterruptedException, LineUnavailableException {
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
@@ -465,7 +481,7 @@ public class Runner2 {
                   fileWriter.close();
 
                   try {
-                    CaptchaSolver.svgToPng("captcha-new.svg", "captcha-new.png");
+                    svgToPng("captcha-new.svg", "captcha-new.png");
 //                      Thread.sleep(10);
                   } catch (TranscoderException e) {
                     e.printStackTrace();
